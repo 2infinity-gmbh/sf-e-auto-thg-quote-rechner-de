@@ -1,0 +1,149 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+}
+
+const { title, description, canonical } = Astro.props;
+const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- SEO Meta Tags -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="E-Auto THG-Quote Rechner" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+
+    <!-- Plausible Analytics (DSGVO-compliant, no cookies) -->
+    <script defer data-domain="e-auto-thg-quote-rechner.de" src="https://plausible.io/js/script.js"></script>
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "E-Auto THG-Quote Rechner",
+        "url": "https://e-auto-thg-quote-rechner.de",
+        "description": "Berechnen Sie die THG-Quote für Ihr Elektroauto und maximieren Sie Ihre Prämie",
+        "inLanguage": "de"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "E-Auto THG-Quote Rechner",
+        "url": "https://e-auto-thg-quote-rechner.de"
+      }
+    </script>
+  </head>
+  <body class="min-h-screen flex flex-col bg-gray-50">
+    <!-- Navigation -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+      <nav class="container mx-auto px-4 py-4">
+        <div class="flex items-center justify-between">
+          <a href="/" class="text-xl md:text-2xl font-bold text-green-600 hover:text-green-700">
+            E-Auto THG-Quote Rechner
+          </a>
+          <div class="hidden md:flex space-x-6">
+            <a href="/" class="text-gray-700 hover:text-green-600 transition">Start</a>
+            <a href="/impressum" class="text-gray-700 hover:text-green-600 transition">Impressum</a>
+            <a href="/datenschutz" class="text-gray-700 hover:text-green-600 transition">Datenschutz</a>
+          </div>
+          <!-- Mobile Menu Button -->
+          <button id="mobile-menu-btn" class="md:hidden text-gray-700 focus:outline-none" aria-label="Menü öffnen">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2">
+          <a href="/" class="block py-2 text-gray-700 hover:text-green-600 transition">Start</a>
+          <a href="/impressum" class="block py-2 text-gray-700 hover:text-green-600 transition">Impressum</a>
+          <a href="/datenschutz" class="block py-2 text-gray-700 hover:text-green-600 transition">Datenschutz</a>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-8">
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+      <div class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- About -->
+          <div>
+            <h3 class="font-bold text-lg mb-3 text-gray-800">E-Auto THG-Quote Rechner</h3>
+            <p class="text-gray-600 text-sm">
+              Ihr zuverlässiger Rechner für die Treibhausgasquote (THG-Quote) von Elektrofahrzeugen.
+              Berechnen Sie schnell und einfach Ihre mögliche Prämie.
+            </p>
+          </div>
+
+          <!-- Quick Links -->
+          <div>
+            <h3 class="font-bold text-lg mb-3 text-gray-800">Schnelllinks</h3>
+            <ul class="space-y-2 text-sm">
+              <li><a href="/" class="text-gray-600 hover:text-green-600 transition">Startseite</a></li>
+              <li><a href="/impressum" class="text-gray-600 hover:text-green-600 transition">Impressum</a></li>
+              <li><a href="/datenschutz" class="text-gray-600 hover:text-green-600 transition">Datenschutz</a></li>
+            </ul>
+          </div>
+
+          <!-- Info -->
+          <div>
+            <h3 class="font-bold text-lg mb-3 text-gray-800">Informationen</h3>
+            <p class="text-gray-600 text-sm">
+              Die THG-Quote ermöglicht es E-Auto-Besitzern, CO₂-Einsparungen zu monetarisieren.
+              Nutzen Sie unseren Rechner für eine erste Einschätzung.
+            </p>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-200 mt-8 pt-6 text-center text-gray-600 text-sm">
+          <p>&copy; {new Date().getFullYear()} E-Auto THG-Quote Rechner. Alle Rechte vorbehalten.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Mobile Menu Script -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (mobileMenuBtn && mobileMenu) {
+          mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
